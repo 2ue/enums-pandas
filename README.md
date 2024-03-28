@@ -31,7 +31,7 @@ const lingshi = [
 const lingshiEp = new EP(fruit, {
   keys: {
     // key: 'key', 默认为key可以不传
-    value: 'key',
+    value: 'no',
   }
 });
 ```

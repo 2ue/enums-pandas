@@ -23,7 +23,7 @@ type EnumsOptions {
 enums.source可以得到原始数据nodes
 enums.rebuild可以重新构建数据
 enums.size可以得到数据的长度
-enums.bdict返回key和value的双向映射字典
+enums.bidict返回key和value的双向映射字典
 enums.hasKey(key: string | string[])可以判断是否存在该key
 enums.hasValue(value: any | any[])可以判断是否存在该value
 enums.keys()可以得到所有key的数组

@@ -1,81 +1,146 @@
-Enums 类是一个用于处理枚举的工具类。下面是对该类中各个方法的说明和示例：
-const source = [
-  { key: 'test1', value: 'value1' },
-  { key: 'test2', value: 'value2' },
+# EnumsPandas
+
+> 通过使用 EnumsPandas，可以方便地处理枚举数据，并进行各种操作，如获取、筛选、重建等。
+
+## 安装
+
+```bash
+npm install enums-pandas
+```
+
+## 使用
+
+```js
+import { EnumsPandas as EP } from 'enums-pandas';
+
+const fruit = [
+  { key: 'apple', value: 'red', label: '苹果' },
+  { key: 'banana', value: 'yellow', label: '香蕉' },
 ];
-const enums = new Enums(source);
+const fruitEp = new EP(fruit);
+```
+
+另外还可以传入参数，指定对应的key和value键值，示例：
+
+```js
+
+const lingshi = [
+  { key: 'peanut', no: 100, label: '花生' },
+  { key: 'melonSeeds', no: 101, label: '瓜子' },
+];
+const lingshiEp = new EP(fruit, {
+  keys: {
+    // key: 'key', 默认为key可以不传
+    value: 'key',
+  }
+});
+```
+
+## API
+
+### source
+
+> 获取源数据。
+```js
+console.log(fruitEp.source);
+// 输出:
+// [
+//   { key: 'apple', value: 'red', label: '苹果' },
+//   { key: 'banana', value: 'yellow', label: '香蕉' }
+// ]
+```
+
+### size
+
+> 获取枚举项数量。
+
+```js
+console.log(fruitEp.size);
+// 输出: 2
+```
+
+### bidict
+
+> 获取以{key}和{value}生成的双向映射字典（bidirectional mapping dict）
+
+ps: 注意使用此功能，需要保证每一项{key}和{value}的值是唯一的。
 
 
-init(config?: EnumsConfig): 初始化方法，用于设置枚举的配置对象。可以传入一个可选的 config 参数来覆盖默认配置。示例：
-
-enums.init({ useCache: true });
-
-
-source: 获取枚举项数组。示例：
-
-console.log(enums.source); // 输出: [{ key: 'test1', value: 'value1' }, { key: 'test2', value: 'value2' }]
-
-
-size: 获取枚举项数量。示例：
-
-console.log(enums.size); // 输出: 2
-
-
-bdict: 获取枚举项的键值对。示例：
-
-console.log(enums.bdict);
+```js
+console.log(fruitEp.bdict);
 // 输出:
 // {
-//   test1: 'value1',
-//   value1: 'test1',
-//   test2: 'value2',
-//   value2: 'test2'
+//   apple: 'red',
+//   red: 'apple',
+//   banana: 'yellow',
+//   yellow: 'banana'
 // }
+```
 
+### rebuild(cb: RebuildCallback, key?: string)
 
-rebuild(cb: RebuildCallback, key?: string): 根据回调函数重建枚举项数组，并可选择将重建结果存入重建缓存对象中。示例：
+> 根据回调函数重建枚举项数组，并可选择(如果key有值，如果key相同则覆盖上一次的结果)，将重建结果存入重建缓存对象中。
 
-const newEnums = enums.rebuild((item) => {
-  return { ...item, value: item.value.toUpperCase() };
-}, 'uppercase');
-console.log(newEnums);
+```js
+const newFruit = fruitEp.rebuild((item) => {
+  return { ...item, id: item.key };
+}, 'selectOptions');
+console.log(newFruit);
 // 输出:
 // [
-//   { key: 'test1', value: 'VALUE1' },
-//   { key: 'test2', value: 'VALUE2' }
+//   { id: 'apple', value: 'red', label: '苹果' },
+//   { id: 'banana', value: 'yellow', label: '香蕉' }
 // ]
-console.log(enums.rebuildCache.uppercase);
+console.log(fruitEp.rebuildCache.selectOptions);
 // 输出:
 // [
-//   { key: 'test1', value: 'VALUE1' },
-//   { key: 'test2', value: 'VALUE2' }
+//   { id: 'apple', value: 'red', label: '苹果' },
+//   { id: 'banana', value: 'yellow', label: '香蕉' }
 // ]
+```
 
+## getRow(columnKey: string, value: number | string)
 
-getRow(columnKey: string, value: number | string): 根据指定的列键和值获取对应的行。示例：
+> 根据指定的列键和值获取对应的行。
 
-console.log(enums.getRow('key', 'test1')); // 输出: { key: 'test1', value: 'value1' }
+```js
+console.log(fruitEp.getRow('key', 'apple'));
+// 输出:
+// { key: 'apple', value: 'red', label: '苹果' }
+```
 
+### getRowsBy(columnKey: string, callback: FilterRowCallback)
 
-getRowsBy(columnKey: string, callback: FilterRowCallback): 根据指定的列键和回调函数筛选出符合条件的行数组。示例：
+> 根据指定的列键和回调函数筛选出符合条件的行数组
 
-const filteredRows = enums.getRowsBy('value', (value) => value.includes('value'));
+```js
+const filteredRows = fruitEp.getRowsBy('value', (value) => value.includes('red'));
 console.log(filteredRows);
 // 输出:
 // [
-//   { key: 'test1', value: 'value1' },
-//   { key: 'test2', value: 'value2' }
+//   { key: 'apple', value: 'red', label: '苹果' }
 // ]
+```
+
+### getColumns(columnKey: string)
+
+>获取指定列键的所有值组成的数组。
+
+```js
+console.log(fruitEp.getColumns('key'));
+// 输出:
+// ['apple', 'banana']
+```
+
+### getColumnsBy(columnKey: string, callback: FilterRowCallback)
+
+>根据指定的列键和回调函数筛选出符合条件的值组成的数组
+
+```js
+const filteredColumns = fruitEp.getColumnsBy('value', (value) => value.includes('red'));
+console.log(filteredColumns);
+// 输出:
+// ['red']
+```
 
 
-getColumns(columnKey: string): 获取指定列键的所有值组成的数组。示例：
-
-console.log(enums.getColumns('key')); // 输出: ['test1', 'test2']
-
-
-getColumnsBy(columnKey: string, callback: FilterRowCallback): 根据指定的列键和回调函数筛选出符合条件的值组成的数组。示例：
-
-const filteredColumns = enums.getColumnsBy('value', (value) => value.includes('value'));
-console.log(filteredColumns); // 输出: ['value1', 'value2']
-
-通过使用 Enums 类及其方法，你可以方便地处理枚举数据，并进行各种操作，如获取、筛选、重建等。

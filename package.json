@@ -1,0 +1,22 @@
+{
+  "name": "enmus-pandas",
+  "version": "1.0.0",
+  "description": "Enums-pandas 类是一个用于处理枚举的工具类，通过Enums-pandas可以方便地处理枚举数据，并进行各种操作，如获取、筛选、重建。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/2ue/enums-pandas.git"
+  },
+  "keywords": [
+    "enums"
+  ],
+  "author": "2ue",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/2ue/enums-pandas/issues"
+  },
+  "homepage": "https://github.com/2ue/enums-pandas#readme"
+}

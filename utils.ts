@@ -1,4 +1,6 @@
+// 判断基础数据类型是否为空
 export const isNull = (value: any) => [undefined, '', null, NaN].includes(value);
+
 // 拓展isNull方法，判断array和json是否为空
 export const isBlank = (value: any) => {
   if (isNull(value)) return true;

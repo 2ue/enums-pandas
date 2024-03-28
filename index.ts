@@ -1,25 +1,11 @@
 import { isNull } from './utils';
-type EnumsConfigKeys = {
-  key?: string;
-  value?: string;
-};
+import {
+    EnumsConfig,
+    EnumSource,
+    RebuildCallback,
+    FilterRowCallback,
+} from './type';
 
-type EnumsConfig = {
-  keys?: EnumsConfigKeys;
-  // 使用缓存，提高性能，使用后，查询操作会进行缓存，除非进行了枚举的修改（增删改等操作）
-  useCache?: boolean;
-};
-
-
-type EnumSource = {
-  key?: string
-  value?: string | number
-  [k: string]: any
-};
-
-type RebuildCallback = (source: EnumSource, index: number) => EnumSource;
-
-type FilterRowCallback = (value: any, row: { index: number, item: EnumSource }) => boolean;
 
 function transformBdict(source: EnumSource[], config?: EnumsConfig) {
   const bidict = new Map();

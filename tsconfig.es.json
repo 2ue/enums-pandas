@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "module": "esnext",
+    "outDir": "dist/es",
+    "declaration": true,
+    "sourceMap": true,
+    "lib": ["esnext", "dom"],
+    "importHelpers": true
+  },
+  "exclude": ["**/node_modules/**", "**/__tests__/*.ts", "**/__tests__/*.tsx"],
+  "compileOnSave": false
+}

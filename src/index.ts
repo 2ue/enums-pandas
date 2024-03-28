@@ -1,22 +1,21 @@
-import { isNull } from './utils';
+import { isNull } from "./utils";
 import {
-    EnumsConfig,
-    EnumSource,
-    RebuildCallback,
-    FilterRowCallback,
-} from './type';
-
+  EnumsConfig,
+  EnumSource,
+  RebuildCallback,
+  FilterRowCallback,
+} from "./type";
 
 function transformBdict(source: EnumSource[], config?: EnumsConfig) {
   const bidict = new Map();
-  const { key, value } = config?.keys || { key: 'key', value: 'value' };
+  const { key, value } = config?.keys || { key: "key", value: "value" };
   source.forEach((item) => {
     // @ts-ignore
     if (isNull(key) || !Object.prototype.hasOwnProperty.call(item, key)) {
       throw new Error(`Enums: when transformBdict key ${key} is not exist`);
     }
     // @ts-ignore
-    if (isNull(value)  || !Object.prototype.hasOwnProperty.call(item, value)) {
+    if (isNull(value) || !Object.prototype.hasOwnProperty.call(item, value)) {
       throw new Error(`Enums: when transformBdict value ${value} is not exist`);
     }
     // @ts-ignore
@@ -49,7 +48,7 @@ export class Enums {
     this.init();
   }
   init(config?: EnumsConfig) {
-    console.log('config', config);
+    console.log("config", config);
   }
   // 提供给外部访问的源数据，不允许修改
   get source() {
@@ -82,16 +81,18 @@ export class Enums {
     return newEnums;
   }
   getRow(columnKey: string, value: number | string) {
-    return this.#_source.find(item => item[columnKey] === value);
+    return this.#_source.find((item) => item[columnKey] === value);
   }
   getRowsBy(columnKey: string, callback: FilterRowCallback) {
-    return this.#_source.filter((item, index) => callback(item[columnKey], { index, item }));
+    return this.#_source.filter((item, index) =>
+      callback(item[columnKey], { index, item })
+    );
   }
   getColumns(columnKey: string) {
-    return this.#_source.map(item => item[columnKey]);
+    return this.#_source.map((item) => item[columnKey]);
   }
   getColumnsBy(columnKey: string, callback: FilterRowCallback) {
     const newRows = this.getRowsBy(columnKey, callback);
-    return newRows.map(item => item[columnKey]);
+    return newRows.map((item) => item[columnKey]);
   }
 }

@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "module": "commonjs",
+    "target": "ES2015",
+    "outDir": "dist/cjs",
+    "declaration": true,
+    "sourceMap": true,
+    "lib": ["esnext", "dom"],
+    "importHelpers": true
+  },
+  "exclude": ["**/node_modules/**", "**/__tests__/*.ts", "**/__tests__/*.tsx"],
+  "compileOnSave": false
+}
